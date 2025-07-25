@@ -49,6 +49,7 @@ clone_ref_repo() {
 	git remote add origin "$URL"
 	set_git_cfg
 	git fetch --prune --prune-tags --tags --force
+	[[ "$TARGET_REF" == refs/* ]] && git fetch origin $TARGET_REF:$TARGET_REF # fetch hidden ref if not already fetched
 	cd - > /dev/null
 }
 
@@ -57,6 +58,7 @@ update_ref_repo() {
 	cd "$REF_DIR"
 	guess_repo
 	git -c gc.auto=0 fetch --prune --prune-tags --tags --force
+	[[ "$TARGET_REF" == refs/* ]] && git fetch origin $TARGET_REF:$TARGET_REF # fetch hidden ref if not already fetched
 	cd - > /dev/null
 }
 
@@ -72,6 +74,7 @@ clone_target_repo() {
 	set_git_cfg
 	echo "$ABS_REF_DIR"/objects > .git/objects/info/alternates
 	git fetch --prune --prune-tags --tags --force
+	[[ "$TARGET_REF" == refs/* ]] && git fetch origin $TARGET_REF:$TARGET_REF # fetch hidden ref if not already fetched
 	cd - > /dev/null
 }
 
@@ -90,6 +93,7 @@ update_target_repo() {
 		fi
 	fi
 	git fetch --prune --prune-tags --tags --force
+	[[ "$TARGET_REF" == refs/* ]] && git fetch origin $TARGET_REF:$TARGET_REF # fetch hidden ref if not already fetched
 	cd "$SAVPWD"
 }
 
